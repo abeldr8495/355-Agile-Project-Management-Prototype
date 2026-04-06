@@ -34,21 +34,21 @@ body{background:#0a0a0a;color:#e0e0e0;font-family:'IBM Plex Mono','Courier New',
 .logo-mark span{color:#e8734a}
 .logo-sub{font-size:9px;letter-spacing:.18em;color:#444;text-transform:uppercase;margin-top:4px}
 .form-group{display:flex;flex-direction:column;gap:6px}
-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#444}
-input{background:#0d0d0d;border:1px solid #222;border-radius:7px;color:#ccc;font-family:inherit;font-size:12px;padding:10px 13px;outline:none;transition:border-color .15s;width:100%}
+label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888}
+input{background:#0d0d0d;border:1px solid #333;border-radius:7px;color:#e0e0e0;font-family:inherit;font-size:12px;padding:10px 13px;outline:none;transition:border-color .15s;width:100%}
 input:focus{border-color:#e8734a}
 .btn{background:#e8734a;border:none;border-radius:7px;color:#fff;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.08em;padding:11px;transition:opacity .15s;width:100%}
 .btn:hover{opacity:.85}
-.error{background:#e84a4a18;border:1px solid #e84a4a44;border-radius:6px;color:#e84a4a;font-size:11px;padding:9px 12px;text-align:center}
-.hint{background:#ffffff06;border:1px solid #1e1e1e;border-radius:6px;font-size:10px;color:#555;padding:10px 12px;line-height:1.8}
-.hint strong{color:#888;font-weight:600}
+.error{background:#e84a4a18;border:1px solid #e84a4a66;border-radius:6px;color:#f07070;font-size:11px;padding:9px 12px;text-align:center}
+.hint{background:#ffffff08;border:1px solid #2a2a2a;border-radius:6px;font-size:10px;color:#888;padding:10px 12px;line-height:1.8}
+.hint strong{color:#bbb;font-weight:600}
 </style>
 </head>
 <body>
 <div class="card">
     <div class="logo">
         <div class="logo-mark"><span>▸</span> Agile Board</div>
-        <div class="logo-sub">Final Edition</div>
+        <div class="logo-sub">Demo</div>
     </div>
 
     <?php if ($error): ?>

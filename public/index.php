@@ -23,7 +23,7 @@ $user = currentUser();
     <div class="header-left">
         <div class="logo">
             <div class="logo-mark"><span class="accent">▸</span> Agile Board</div>
-            <div class="logo-sub">FINAL EDITION</div>
+            <div class="logo-sub">DEMO</div>
         </div>
         <div class="sprint-progress">
             <div class="sprint-labels">
@@ -74,7 +74,7 @@ $user = currentUser();
 <main id="board">
     <div class="col" id="col-todo"       data-status="todo">
         <div class="col-header">
-            <div class="col-dot" style="background:#555"></div>
+            <div class="col-dot" style="background:#888"></div>
             <span class="col-title">To Do</span>
             <span class="col-count" id="count-todo">0</span>
         </div>

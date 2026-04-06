@@ -1,12 +1,20 @@
-## PHP + SQLite + Vanilla JS · No frameworks · No database server
+# Agile Board
+
+A lightweight Kanban board built with PHP, SQLite, and vanilla JS — no frameworks, no database server.
 
 ---
 
 ## Quick Start (5 minutes)
 
-### Step 1 — Check PHP is installed
+> **Jump to your OS:** [macOS](#macos) · [Windows](#windows)
 
-Open a terminal and run:
+---
+
+### macOS
+
+#### Step 1 — Check PHP is installed
+
+Open Terminal and run:
 
 ```bash
 php -v
@@ -21,23 +29,62 @@ brew install php
 
 (Install Homebrew first if needed: https://brew.sh)
 
----
-
-### Step 2 — Navigate to this folder
-
-In the terminal:
+#### Step 2 — Navigate to this folder
 
 ```bash
 cd /path/to/your/project
 ```
 
-(Replace with the actual path to the project directory.)
+#### Step 3 — Run the PHP dev server
+
+```bash
+php -S localhost:8000 -t public
+```
+
+Leave this terminal running. You should see:
+
+```
+PHP 8.x.x Development Server (http://localhost:8000) started
+```
+
+Then skip to [Step 4](#step-4--set-up-the-database-run-once).
 
 ---
 
-### Step 3 — Run the PHP dev server
+### Windows
 
-```bash
+#### Step 1 — Install PHP
+
+1. Go to https://windows.php.net/download and download the latest **PHP 8.x Non Thread Safe** zip.
+2. Extract it to `C:\php`.
+3. Add `C:\php` to your system PATH:
+   - Search **"Environment Variables"** in the Start menu → **Edit the system environment variables**
+   - Under **System variables**, select **Path** → **Edit** → **New** → type `C:\php` → OK all dialogs.
+4. Open a new **Command Prompt** and confirm it works:
+
+```cmd
+php -v
+```
+
+You should see PHP 8.x.
+
+> **Alternative:** If you have [Chocolatey](https://chocolatey.org) installed, you can skip the above and just run:
+>
+> ```cmd
+> choco install php
+> ```
+
+#### Step 2 — Navigate to this folder
+
+Open Command Prompt or PowerShell:
+
+```cmd
+cd C:\path\to\your\project
+```
+
+#### Step 3 — Run the PHP dev server
+
+```cmd
 php -S localhost:8000 -t public
 ```
 
@@ -58,7 +105,7 @@ http://localhost:8000/setup.php
 ```
 
 You will see: **✓ Setup complete**
-This creates the SQLite database, 6 demo users, and 7 seed tasks.
+This creates the SQLite database, 6 demo users, and 15 seed tasks.
 
 ⚠️ You only need to do this once. If you run it again it is safe — users use
 INSERT OR IGNORE and tasks are only seeded if the table is empty.
@@ -88,18 +135,26 @@ Demo accounts (all use password: **password**):
 
 ## What You Can Do
 
-| Feature              | How                                                                                   |
-| -------------------- | ------------------------------------------------------------------------------------- |
-| **View board**       | Tasks appear in To Do / In Progress / Done columns                                    |
-| **Drag & drop**      | Grab a card and drop it into another column                                           |
-| **Open task detail** | Click any card — sidebar slides in from the right                                     |
-| **Edit task**        | Change title, description, priority, status, assignee, tags in sidebar → Save Changes |
-| **Delete task**      | Open sidebar → Delete button (shows a confirm dialog)                                 |
-| **Create task**      | Click **+ NEW TASK** in the header, or **+ Add task** under any column                |
-| **Search**           | Type in the search box — filters by title or tag in real time                         |
-| **Notifications**    | Bell icon (top right) — every action logs an entry with a timestamp                   |
-| **Sprint progress**  | Bar auto-updates as tasks move to Done                                                |
-| **Switch user**      | Log out (→ icon next to your avatar) and log in as someone else                       |
+| Feature              | How                                                                            |
+| -------------------- | ------------------------------------------------------------------------------ |
+| **View board**       | Tasks appear in To Do / In Progress / Done columns                             |
+| **Drag & drop**      | Grab a card and drop it into another column                                    |
+| **Open task detail** | Click any card — sidebar slides in from the right                              |
+| **Edit task**        | Change title, description, priority, status, assignee, and tags → Save Changes |
+| **Delete task**      | Open sidebar → Delete button (shows a confirm dialog)                          |
+| **Create task**      | Click **+ NEW TASK** in the header, or **+ Add task** under any column         |
+| **Search**           | Type in the search box — filters by title or tag in real time                  |
+| **Notifications**    | Bell icon (top right) — every action logs an entry with a timestamp            |
+| **Sprint progress**  | Bar auto-updates as tasks move to Done                                         |
+| **Switch user**      | Log out (→ icon next to your avatar) and log in as someone else                |
+
+### Coming soon
+
+| Feature                | Status      |
+| ---------------------- | ----------- |
+| Role-based permissions | In progress |
+| Sprint model           | In progress |
+| Story points           | Planned     |
 
 ---
 
@@ -132,11 +187,15 @@ agile-board/
 
 ## Troubleshooting
 
-**"Permission denied" on data/ folder**
+**"Permission denied" on data/ folder** _(macOS/Linux)_
 
 ```bash
 chmod 755 data
 ```
+
+**"Permission denied" on data/ folder** _(Windows)_
+
+Right-click the `data` folder → **Properties** → **Security** → ensure your user has **Write** permission.
 
 **Port 8000 already in use**
 
@@ -148,11 +207,22 @@ Then visit http://localhost:8080
 
 **Want to reset the database (start fresh)**
 
+macOS/Linux:
+
 ```bash
 rm data/agile.db
 ```
 
+Windows:
+
+```cmd
+del data\agile.db
+```
+
 Then visit http://localhost:8000/setup.php again.
+
+**`php` is not recognised on Windows**
+Make sure `C:\php` is in your PATH (see Step 1) and that you opened a **new** Command Prompt after editing it.
 
 **Session not persisting between pages**
 Make sure you're using http://localhost:8000 (not 127.0.0.1) — PHP sessions are

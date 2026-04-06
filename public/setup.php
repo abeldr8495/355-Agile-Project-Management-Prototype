@@ -41,13 +41,16 @@ foreach ($users as $u) $stmt->execute($u);
 $count = (int)$db->query("SELECT COUNT(*) FROM tasks")->fetchColumn();
 if ($count === 0) {
     $tasks = [
-        ['Design system audit',       'Review all components for consistency with the new design tokens.',  'todo',       1, 'high', 'design,qa'],
-        ['Auth middleware refactor',  'Extract auth logic into a dedicated middleware layer.',               'inprogress', 2, 'crit', 'backend,security'],
-        ['Write API docs',            'Document all public endpoints using OpenAPI 3.1.',                   'inprogress', 3, 'mid',  'docs'],
-        ['Set up CI pipeline',        'Configure GitHub Actions for lint, test, and deploy.',               'done',       4, 'high', 'devops'],
-        ['Mobile responsiveness',     'Fix layout breakpoints for screens below 768px.',                    'todo',       null, 'mid','frontend'],
-        ['Database indexing',         'Add missing indexes on the tasks and users tables.',                 'todo',       5, 'low',  'backend,performance'],
-        ['Notification system',       'Build real-time notification dropdown with read/unread states.',     'done',       6, 'crit', 'frontend,realtime'],
+        // Done
+        ['Project scaffolding',       'Set up repo, folder structure, and dev server.',                                     'done',       4, 'high', 'devops'],
+
+        // In Progress
+        ['User authentication',       'Session-based login and logout with password hashing and redirect guards.',           'inprogress', 1, 'crit', 'backend,security'],
+        ['Role-based permissions',    'Add admin/member roles. Restrict delete and assignment to admins only.',              'inprogress', 2, 'crit', 'backend,security'],
+        ['Sprint model',              'Sprints table, ability to add tasks to a sprint, and progress bar on the header.',    'inprogress', 3, 'high', 'backend,agile'],
+
+        // To Do
+        ['UI Design and User Accessibility',            'Design a responsive and accessible user interface.',           'todo',       6, 'high', 'frontend,design'],
     ];
     $stmt = $db->prepare("INSERT INTO tasks (title, description, status, assigned_to, priority, tags) VALUES (?,?,?,?,?,?)");
     foreach ($tasks as $t) $stmt->execute($t);
@@ -58,7 +61,7 @@ echo "<!DOCTYPE html><html><head><title>Setup</title>
 a{color:#e8734a;text-decoration:none;border:1px solid #e8734a;padding:8px 18px;border-radius:6px}a:hover{background:#e8734a22}</style></head>
 <body>
 <div style='font-size:24px;font-weight:700'>✓ Setup complete</div>
-<div style='color:#666;font-size:13px'>Database created · 6 users seeded · 7 tasks seeded</div>
+<div style='color:#666;font-size:13px'>Database created · 6 users seeded · 5 tasks seeded</div>
 <div style='color:#555;font-size:12px;margin-top:8px'>Login with any username: rachel / keegan / nithin / charlie / sid / david<br>Password for all: <span style='color:#888'>password</span></div>
 <a href='/login.php'>→ Go to Login</a>
 </body></html>";
