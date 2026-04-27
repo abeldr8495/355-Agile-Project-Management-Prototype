@@ -1,4 +1,5 @@
 <?php
+// Return all tasks for one board, together with assignee display metadata.
 require_once '../../src/auth.php';
 requireLogin();
 

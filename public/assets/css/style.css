@@ -1,3 +1,4 @@
+/* Agile Board stylesheet: theme variables, responsive layout, and component styling. */
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -130,6 +131,11 @@ select option { background: var(--bg-3); }
     transition: all .15s;
 }
 .btn-ghost:hover { border-color: var(--text-5); color: var(--text-3); }
+
+.btn-compact {
+    padding: 6px 10px;
+    font-size: 9px;
+}
 
 .link-btn {
     background: none;
@@ -313,6 +319,11 @@ select option { background: var(--bg-3); }
 
 /* User menu */
 .user-menu { display: flex; align-items: center; gap: 6px; }
+.user-nav-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
 .user-avatar {
     width: 28px;
     height: 28px;
@@ -622,6 +633,7 @@ select:focus-visible,
     flex-direction: column;
     gap: 13px;
     animation: popIn .17s ease;
+    font-family: inherit;
 }
 @keyframes popIn {
     from { transform: scale(.93); opacity: 0; }
@@ -1088,6 +1100,110 @@ body:not(.light-mode) .coment-item:hover {
     border-radius: 10px;
 }
 
+.attachments-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-2);
+    gap: 10px;
+}
+
+.attachments-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.attachments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.attachment-item {
+    border: 1px solid var(--border-2);
+    background: var(--bg-2);
+    border-radius: 14px;
+    padding: 8px;
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.attachment-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--bg-3);
+    transition: background .15s, transform .15s;
+}
+
+.attachment-link:hover {
+    background: var(--bg-4);
+    transform: translateY(-1px);
+}
+
+.attachment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    background: var(--accent-10, rgba(232, 115, 74, .12));
+    color: var(--accent);
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.attachment-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.attachment-name {
+    color: var(--text-1);
+    font-size: 12px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.attachment-meta {
+    color: var(--text-4);
+    font-size: 10px;
+}
+
+.attachment-download {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.attachment-delete-btn {
+    height: 34px;
+    align-self: center;
+    flex-shrink: 0;
+}
+
 .comment-compose .btn-primary {
     width: 100%;
 }
@@ -1174,4 +1290,471 @@ body.light-mode .comment-action-btn:hover {
 
 body.light-mode .comment-action-btn.danger:hover {
     background: rgba(220, 76, 76, 0.08);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADDITIONAL THEMES
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Midnight Theme ── */
+body.midnight-mode {
+    --bg:        #050914;
+    --bg-2:      #080d1c;
+    --bg-3:      #0c1225;
+    --bg-4:      #10182e;
+    --bg-5:      #141e38;
+    --border:    #1a2540;
+    --border-2:  #1f2d4e;
+    --border-3:  #253558;
+    --text:      #d6e4ff;
+    --text-2:    #9db4e8;
+    --text-3:    #6684c0;
+    --text-4:    #415585;
+    --text-5:    #2d3d66;
+    --accent:    #5b8dee;
+    --green:     #6ee7b7;
+    --yellow:    #fbbf24;
+    --blue:      #60a5fa;
+    --red:       #f87171;
+}
+
+/* ── Forest Theme ── */
+body.forest-mode {
+    --bg:        #0c120c;
+    --bg-2:      #0f160f;
+    --bg-3:      #131a13;
+    --bg-4:      #172017;
+    --bg-5:      #1c271c;
+    --border:    #1e2e1e;
+    --border-2:  #243624;
+    --border-3:  #2b402b;
+    --text:      #d4edcc;
+    --text-2:    #9dc990;
+    --text-3:    #6a9960;
+    --text-4:    #456840;
+    --text-5:    #314d2d;
+    --accent:    #7bc47f;
+    --green:     #a3e84a;
+    --yellow:    #d4e84a;
+    --blue:      #4abbe8;
+    --red:       #e86f4a;
+}
+
+/* ── Rose Theme ── */
+body.rose-mode {
+    --bg:        #130a0d;
+    --bg-2:      #180c10;
+    --bg-3:      #1e0f14;
+    --bg-4:      #241219;
+    --bg-5:      #2c1620;
+    --border:    #33161e;
+    --border-2:  #3e1a25;
+    --border-3:  #4d202e;
+    --text:      #ffd6e3;
+    --text-2:    #e8a0ba;
+    --text-3:    #c0607e;
+    --text-4:    #8f3d58;
+    --text-5:    #6b2a42;
+    --accent:    #e84a9e;
+    --green:     #e8734a;
+    --yellow:    #e8c84a;
+    --blue:      #9e4ae8;
+    --red:       #e84a4a;
+}
+
+/* ── Story Points badge on task cards ── */
+.story-points {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--bg-4);
+    border: 1px solid var(--border-2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-3);
+    letter-spacing: .05em;
+}
+.story-points::before { content: '⬡'; font-size: 8px; }
+
+/* ── Settings / Admin nav link in header ── */
+.settings-link {
+    font-size: 10px;
+    color: var(--text-4);
+    text-decoration: none;
+    padding: 5px 8px;
+    border-radius: var(--radius);
+    transition: color .15s, background .15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.settings-link:hover { color: var(--accent); background: var(--bg-4); }
+
+/* ── Role badge on avatars ── */
+.role-crown {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 8px;
+    line-height: 1;
+}
+
+/* ── Permission-locked controls ── */
+.perm-locked {
+    opacity: .35;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* ── Story points input in sidebar ── */
+.story-points-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.story-points-wrap input[type="number"] {
+    width: 72px;
+    text-align: center;
+}
+.sp-hint {
+    font-size: 9px;
+    color: var(--text-4);
+}
+
+/* ── Register / settings link below login form ── */
+.register-link {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-3, #666);
+    margin-top: 4px;
+}
+.register-link a { color: var(--accent, #e8734a); text-decoration: none; }
+.register-link a:hover { text-decoration: underline; }
+
+/* ── User avatar in header with settings link ── */
+.user-settings-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.user-settings-wrap .user-avatar { cursor: pointer; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   COLUMN MANAGER BAR (admin-only strip above the board)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.column-manager {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-3);
+    flex-wrap: wrap;
+}
+
+.col-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px 3px 8px;
+    border: 1px solid currentColor;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    background: transparent;
+    opacity: .85;
+    transition: opacity .15s;
+}
+.col-pill:hover { opacity: 1; }
+
+.col-pill-move,
+.col-pill-del {
+    appearance: none;
+    border: none;
+    background: none;
+    color: currentColor;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    padding: 0 4px;
+    opacity: .7;
+    transition: opacity .15s, transform .15s;
+}
+.col-pill-move:hover,
+.col-pill-del:hover { opacity: 1; transform: translateY(-1px); }
+.col-pill-move[disabled] {
+    opacity: .3;
+    cursor: default;
+}
+
+.col-pill {
+    cursor: grab;
+}
+.col-pill.dragging {
+    opacity: .6;
+    transform: scale(1.02);
+}
+.col-pill.drag-over {
+    outline: 2px dashed var(--accent);
+    outline-offset: 2px;
+}
+.col-pill-handle {
+    cursor: grab;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.add-col-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: none;
+    border: 1px dashed var(--border-3);
+    border-radius: 20px;
+    color: var(--text-4);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+}
+.add-col-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* idle warning toast variant */
+.toast.idle-warn {
+    background: var(--yellow, #e8c84a);
+    color: #111;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE OVERHAUL
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Hamburger toggle button (hidden on desktop) ── */
+#sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-2);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius);
+    transition: background .15s;
+    flex-shrink: 0;
+}
+#sidebar-toggle:hover { background: var(--bg-3); }
+#sidebar-toggle svg { display: block; }
+
+/* ── Sidebar overlay for mobile drawer ── */
+#boards-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(2px);
+    z-index: 199;
+}
+#boards-sidebar-overlay.visible { display: block; }
+
+/* ── Touch-friendly minimum tap targets ── */
+.btn-primary,
+.btn-ghost,
+.board-nav-item,
+.close-btn,
+#sidebar-toggle {
+    min-height: 36px;
+}
+
+/* ── Header: prevent overflow on small screens ── */
+@media (max-width: 900px) {
+    #header {
+        padding: 10px 14px;
+        gap: 10px;
+    }
+    .header-center { display: none; }   /* search hidden; we'll add it inline */
+    .header-left { gap: 10px; }
+    .current-board-name { font-size: 14px; }
+}
+
+/* ════════════════════════════════
+   BREAKPOINT: TABLET  ≤ 768px
+   ════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* Show hamburger, hide permanent sidebar */
+    #sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+
+    #boards-sidebar {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform .22s cubic-bezier(.4,0,.2,1);
+        width: 270px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.4);
+    }
+    #boards-sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* Main panel takes full width */
+    #main-panel { width: 100%; }
+
+    /* Header collapses */
+    #header {
+        padding: 8px 12px;
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+    .header-right { gap: 6px; }
+    #theme-toggle { display: none; }   /* too cramped; move to sidebar */
+
+    /* Board: horizontal scroll with snap */
+    #board {
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 14px 12px;
+        gap: 12px;
+        scroll-padding-left: 12px;
+    }
+
+    .col {
+        scroll-snap-align: start;
+        flex: 0 0 85vw;
+        max-width: 85vw;
+        min-width: 0;
+    }
+
+    /* Board toolbar wraps nicely */
+    .board-toolbar {
+        padding: 10px 12px 0 12px;
+        gap: 8px;
+    }
+    .board-toolbar-left,
+    .board-toolbar-right {
+        gap: 8px;
+    }
+    .sprint-progress { max-width: 150px; }
+    #story-points-summary { margin-left: 8px !important; gap: 6px !important; }
+
+    /* Task sidebar becomes full-width bottom sheet on mobile */
+    .sidebar {
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        top: auto;
+        width: 100% !important;
+        max-height: 85vh;
+        border-radius: 18px 18px 0 0;
+        border-left: none;
+        border-top: 1px solid var(--border-2);
+        animation: slideUp .22s cubic-bezier(.4,0,.2,1);
+        z-index: 150;
+        overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to   { transform: none; opacity: 1; }
+    }
+
+    /* Drag handle pill at top of bottom sheet */
+    .sidebar::before {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: var(--border-3);
+        border-radius: 2px;
+        margin: -10px auto 14px auto;
+    }
+
+    #sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 149;
+    }
+
+    /* Modal fills screen */
+    .modal {
+        width: calc(100vw - 24px) !important;
+        max-width: 100% !important;
+        margin: 12px;
+    }
+
+    /* Notifications panel */
+    .notif-panel {
+        right: 0;
+        left: auto;
+        width: calc(100vw - 24px);
+        max-width: 340px;
+    }
+
+    /* Search: show below header on mobile via a toggle */
+    .search-wrap {
+        display: none;
+    }
+
+    /* NEW TASK button: icon-only on very small screens */
+    #new-task-btn {
+        padding: 8px 12px;
+        font-size: 9px;
+    }
+}
+
+/* ════════════════════════════════
+   BREAKPOINT: PHONE  ≤ 480px
+   ════════════════════════════════ */
+@media (max-width: 480px) {
+
+    #header { padding: 8px 10px; }
+
+    .col { flex: 0 0 92vw; max-width: 92vw; }
+
+    /* Pill buttons wrap in task sidebar */
+    .priority-group,
+    .status-group,
+    .assignee-group {
+        gap: 4px;
+    }
+    .pill-btn { padding: 6px 10px; font-size: 9px; }
+
+    .board-toolbar { padding: 8px 10px 0 10px; }
+
+    #story-points-summary { display: none !important; }
+
+    /* Column manager scrolls horizontally */
+    .column-manager {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 8px 10px;
+    }
+}
+
+/* ── Smooth horizontal scroll indicator on board columns ── */
+@media (max-width: 768px) {
+    #board::-webkit-scrollbar { height: 3px; }
+    #board::-webkit-scrollbar-thumb { background: var(--border-3); border-radius: 2px; }
+
+    /* Fade edges to hint scrollability */
+    #main-panel {
+        position: relative;
+    }
+}
+
+/* ── Touch: increase card tap area ── */
+@media (hover: none) {
+    .task-card { padding: 12px 14px; }
+    .task-card .card-actions { opacity: 1; }  /* always show on touch */
+    .col-header { padding: 12px 14px; }
 }

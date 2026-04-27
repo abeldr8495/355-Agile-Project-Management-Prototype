@@ -1,4 +1,5 @@
 <?php
+// Delete one comment, restricted to the comment's original author.
 require_once '../../src/auth.php';
 require_once '../../src/db.php';
 requireLogin();

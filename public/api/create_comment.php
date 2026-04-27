@@ -1,4 +1,5 @@
 <?php
+// Add a comment to a task as the current signed-in user.
 require_once '../../src/auth.php';
 require_once '../../src/db.php';
 requireLogin();
@@ -27,6 +28,13 @@ if ($taskId <= 0) {
 if ($body === '') {
     http_response_code(400);
     echo json_encode(['error' => 'Comment cannot be empty']);
+    exit;
+}
+
+// Cap comment length to prevent excessively large DB writes.
+if (strlen($body) > 5000) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Comment must be 5000 characters or fewer']);
     exit;
 }
 

@@ -1,5 +1,6 @@
 <?php
-// Include authentication helpers and require login
+// Update one task in place from the sidebar, drag/drop, or modal flows.
+// Status validation uses the task's board columns so custom workflows work.
 require_once '../../src/auth.php';
 requireLogin();
 
@@ -22,7 +23,6 @@ if (!$id) {
     exit;
 }
 
-$allowed_statuses   = ['todo', 'inprogress', 'done'];
 $allowed_priorities = ['low', 'mid', 'high', 'crit'];
 
 // Build SET clause only for fields present in the request body
@@ -35,10 +35,6 @@ if (isset($data['title'])) {
     $fields[] = 'title = ?'; $params[] = $title;
 }
 if (isset($data['description'])) { $fields[] = 'description = ?'; $params[] = trim($data['description']); }
-if (isset($data['status']))      {
-    $s = in_array($data['status'], $allowed_statuses, true) ? $data['status'] : 'todo';
-    $fields[] = 'status = ?'; $params[] = $s;
-}
 if (isset($data['priority']))    {
     $p = in_array($data['priority'], $allowed_priorities, true) ? $data['priority'] : 'mid';
     $fields[] = 'priority = ?'; $params[] = $p;
@@ -48,16 +44,58 @@ if (array_key_exists('assigned_to', $data)) {
     $params[] = $data['assigned_to'] ? (int)$data['assigned_to'] : null;
 }
 if (isset($data['tags'])) { $fields[] = 'tags = ?'; $params[] = trim($data['tags']); }
-
-if (!$fields) {
-    http_response_code(400); echo json_encode(['error' => 'No fields to update']); exit;
+if (array_key_exists('story_points', $data)) {
+    $sp = $data['story_points'];
+    $fields[] = 'story_points = ?';
+    $params[] = ($sp !== null && $sp !== '') ? max(0, (int)$sp) : null;
 }
 
-$fields[]  = 'updated_at = CURRENT_TIMESTAMP';
-$params[]  = $id;
+$statusRequested = array_key_exists('status', $data) ? $data['status'] : null;
+if (!$fields && $statusRequested === null) {
+    http_response_code(400);
+    echo json_encode(['error' => 'No fields to update']);
+    exit;
+}
 
 try {
     $db   = getDB();
+    $taskStmt = $db->prepare("SELECT board_id FROM tasks WHERE id = ?");
+    $taskStmt->execute([$id]);
+    $boardId = (int) $taskStmt->fetchColumn();
+
+    if ($boardId <= 0) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Task not found']);
+        exit;
+    }
+
+    if ($statusRequested !== null) {
+        $statusStmt = $db->prepare(
+            "SELECT status_key FROM board_columns WHERE board_id = ? ORDER BY position ASC, id ASC"
+        );
+        $statusStmt->execute([$boardId]);
+        $allowedStatuses = $statusStmt->fetchAll(PDO::FETCH_COLUMN);
+
+        if (!$allowedStatuses) {
+            http_response_code(400);
+            echo json_encode(['error' => 'This board has no columns configured']);
+            exit;
+        }
+
+        $s = in_array($statusRequested, $allowedStatuses, true) ? $statusRequested : $allowedStatuses[0];
+        $fields[] = 'status = ?';
+        $params[] = $s;
+    }
+
+    if (!$fields) {
+        http_response_code(400);
+        echo json_encode(['error' => 'No fields to update']);
+        exit;
+    }
+
+    $fields[]  = 'updated_at = CURRENT_TIMESTAMP';
+    $params[]  = $id;
+
     $sql  = 'UPDATE tasks SET ' . implode(', ', $fields) . ' WHERE id = ?';
     $db->prepare($sql)->execute($params);
 

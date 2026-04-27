@@ -4,17 +4,28 @@
 // - Handles login form POST and sets user session on success
 require_once '../src/auth.php';
 startSession();
-if (!empty($_SESSION['user_id'])) { header('Location: /'); exit; }
+if (!empty($_SESSION['user_id'])) { header('Location: ' . appPath('index.php')); exit; }
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle sign-in form submissions and verify the provided credentials.
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     if (login($username, $password)) {
-        header('Location: /');
+        header('Location: ' . appPath('index.php'));
         exit;
     }
+    // Keep the error message generic to avoid leaking whether the username exists.
     $error = 'Invalid username or password.';
+}
+
+// Show idle timeout notice
+$reason = $_GET['reason'] ?? '';
+$notice = '';
+if ($reason === 'idle') {
+    $notice = 'You were logged out due to 30 minutes of inactivity.';
+} elseif ($reason === 'expired') {
+    $notice = 'Your session expired after 2 hours. Please sign in again.';
 }
 ?>
 <!DOCTYPE html>
@@ -28,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a0a;color:#e0e0e0;font-family:'IBM Plex Mono','Courier New',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.card{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:40px;width:360px;display:flex;flex-direction:column;gap:24px}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:40px;width:360px;max-width:calc(100vw - 32px);display:flex;flex-direction:column;gap:24px}
+@media(max-width:420px){.card{padding:28px 20px;border-radius:10px}}
 .logo{text-align:center}
 .logo-mark{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;color:#e0e0e0;letter-spacing:-.01em}
 .logo-mark span{color:#e8734a}
@@ -51,6 +63,10 @@ input:focus{border-color:#e8734a}
         <div class="logo-sub">Demo</div>
     </div>
 
+    <?php if ($notice): ?>
+    <div class="error" style="background:#e8c84a18;border-color:#e8c84a66;color:#e8c84a"><?= htmlspecialchars($notice) ?></div>
+    <?php endif; ?>
+
     <?php if ($error): ?>
     <div class="error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
@@ -70,10 +86,8 @@ input:focus{border-color:#e8734a}
         </div>
     </form>
 
-    <div class="hint">
-        <strong>Demo accounts</strong><br>
-        Username: <strong>rachel</strong>, <strong>keegan</strong>, <strong>nithin</strong>, <strong>charlie</strong>, <strong>sid</strong>, or <strong>david</strong><br>
-        Password: <strong>password</strong>
+    <div style="text-align:center;font-size:10px;color:#555">
+        New here? <a href="<?= htmlspecialchars(appPath('register.php')) ?>" style="color:#e8734a;text-decoration:none">Create an account →</a>
     </div>
 </div>
 </body>

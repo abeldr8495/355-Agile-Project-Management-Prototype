@@ -1,5 +1,5 @@
 <?php
-// Return the comment thread for a task in oldest-first order.
+// Return the attachment list for one task, including uploader display metadata.
 require_once '../../src/auth.php';
 require_once '../../src/db.php';
 requireLogin();
@@ -16,15 +16,14 @@ if ($taskId <= 0) {
 
 try {
     $db = getDB();
-
+    ensureAttachmentsTable($db);
     $stmt = $db->prepare(
-        "SELECT c.*, u.display_name, u.avatar, u.color
-         FROM comments c
-         JOIN users u ON c.user_id = u.id
-         WHERE c.task_id = ?
-         ORDER BY c.created_at ASC"
+        "SELECT a.*, u.display_name, u.avatar, u.color
+         FROM attachments a
+         JOIN users u ON u.id = a.uploaded_by
+         WHERE a.task_id = ?
+         ORDER BY a.created_at DESC, a.id DESC"
     );
-
     $stmt->execute([$taskId]);
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 } catch (Exception $e) {

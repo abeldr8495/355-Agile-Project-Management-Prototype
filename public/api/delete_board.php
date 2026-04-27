@@ -1,7 +1,9 @@
 <?php
+// Admin-only board deletion endpoint. Tasks, comments, and attachments cascade
+// through foreign keys once the board row is removed.
 require_once '../../src/auth.php';
 require_once '../../src/db.php';
-requireLogin();
+requireAdmin();
 
 header('Content-Type: application/json');
 
@@ -23,6 +25,7 @@ if ($board_id <= 0) {
 
 try {
     $db = getDB();
+    ensureAttachmentsTable($db);
 
     // Prevent deleting last board
     $count = (int)$db->query("SELECT COUNT(*) FROM boards")->fetchColumn();
@@ -32,9 +35,25 @@ try {
         exit;
     }
 
-    // Delete board (tasks will cascade if FK is set)
+    $filesStmt = $db->prepare(
+        "SELECT a.stored_name
+         FROM attachments a
+         JOIN tasks t ON t.id = a.task_id
+         WHERE t.board_id = ?"
+    );
+    $filesStmt->execute([$board_id]);
+    $storedFiles = $filesStmt->fetchAll(PDO::FETCH_COLUMN);
+
+    // Delete board (tasks and attachment rows cascade via foreign keys)
     $stmt = $db->prepare("DELETE FROM boards WHERE id = ?");
     $stmt->execute([$board_id]);
+
+    foreach ($storedFiles as $storedName) {
+        $path = getUploadsDir() . '/' . $storedName;
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
 
     echo json_encode(['success' => true]);
 

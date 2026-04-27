@@ -1,4 +1,7 @@
 <?php
+// Create a task inside the currently selected board.
+// The board owns the valid workflow statuses, so we validate against that
+// board's columns instead of the old hardcoded todo/inprogress/done list.
 require_once '../../src/auth.php';
 requireLogin();
 
@@ -19,6 +22,8 @@ $priority    = $data['priority'] ?? 'mid';
 $assigned_to = $data['assigned_to'] ?? null;
 $tags        = trim($data['tags'] ?? '');
 $board_id    = isset($data['board_id']) ? (int) $data['board_id'] : 0;
+$story_points = isset($data['story_points']) && $data['story_points'] !== null && $data['story_points'] !== ''
+    ? max(0, (int) $data['story_points']) : null;
 
 if (!$title) {
     http_response_code(400);
@@ -32,18 +37,31 @@ if ($board_id <= 0) {
     exit;
 }
 
-$allowed_statuses   = ['todo', 'inprogress', 'done'];
 $allowed_priorities = ['low', 'mid', 'high', 'crit'];
-
-if (!in_array($status, $allowed_statuses, true)) $status = 'todo';
 if (!in_array($priority, $allowed_priorities, true)) $priority = 'mid';
 
 try {
     $db = getDB();
 
+    $statusStmt = $db->prepare(
+        "SELECT status_key FROM board_columns WHERE board_id = ? ORDER BY position ASC, id ASC"
+    );
+    $statusStmt->execute([$board_id]);
+    $allowedStatuses = $statusStmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if (!$allowedStatuses) {
+        http_response_code(400);
+        echo json_encode(['error' => 'This board has no columns configured']);
+        exit;
+    }
+
+    if (!in_array($status, $allowedStatuses, true)) {
+        $status = $allowedStatuses[0];
+    }
+
     $stmt = $db->prepare(
-        "INSERT INTO tasks (board_id, title, description, status, assigned_to, priority, tags)
-         VALUES (?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO tasks (board_id, title, description, status, assigned_to, priority, tags, story_points)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     $stmt->execute([
@@ -53,7 +71,8 @@ try {
         $status,
         $assigned_to,
         $priority,
-        $tags
+        $tags,
+        $story_points,
     ]);
 
     $id = $db->lastInsertId();
