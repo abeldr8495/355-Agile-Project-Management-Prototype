@@ -1,4 +1,6 @@
 .DS_Store
-data/agile.db
+.DS_Store
+data/.DS_Store
 public/.DS_Store
 public/assets/.DS_Store
+.DS_Store
